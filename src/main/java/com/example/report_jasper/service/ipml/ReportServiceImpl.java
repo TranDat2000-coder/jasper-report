@@ -1,6 +1,7 @@
 package com.example.report_jasper.service.ipml;
 
 import com.example.report_jasper.InputData;
+import com.example.report_jasper.common.StatusErrorCode;
 import com.example.report_jasper.entity.ReportTemplateEntity;
 import com.example.report_jasper.exception.BusinessException;
 import com.example.report_jasper.repository.ReportRepository;
@@ -42,12 +43,9 @@ public class ReportServiceImpl implements IReportService {
 		SimpleDateFormat date_format1 = new SimpleDateFormat("dd-MM-YYYY HH-mm-ss");
 		String date_str = date_format1.format(date);
 
-		String compileFile = "C:\\Users\\AH\\JaspersoftWorkspace\\MyReports\\Template_report2.jrxml";
 		try {
-//			InputSource compileFile = new InputSource(new ByteArrayInputStream(getTemplate.getSourceXML().getBytes(Charset.forName("UTF-8"))));
-//			JasperReport jasperReport = JasperCompileManager.compileReport(compileFile.getByteStream());
-
-			JasperReport jasperReport = JasperCompileManager.compileReport(compileFile);
+			InputSource compileFile = new InputSource(new ByteArrayInputStream(getTemplate.getSourceXML().getBytes(Charset.forName("UTF-8"))));
+			JasperReport jasperReport = JasperCompileManager.compileReport(compileFile.getByteStream());
 
 			InputData inputData = new InputData();
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, inputData.getParameters(jsonReportData), new JREmptyDataSource());
@@ -58,7 +56,7 @@ public class ReportServiceImpl implements IReportService {
 			response.setContentType("application/pdf");
 			response.addHeader("Content-Disposition", "inline; filename=jasperdemo" + date_str + ".pdf");
 		} catch (JRException e) {
-			throw new BusinessException("Report faile", 203);
+			throw new BusinessException(StatusErrorCode.DATA_NOT_EXITS, e.getMessage());
 		}
 	}
 

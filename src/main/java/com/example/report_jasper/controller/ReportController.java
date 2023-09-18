@@ -1,9 +1,9 @@
 package com.example.report_jasper.controller;
 
+import com.example.report_jasper.respone.ResponseData;
 import com.example.report_jasper.service.IReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +21,9 @@ public class ReportController {
 
 	@SuppressWarnings("deprecation")
 	@PostMapping("/report-dynamic-template")
-	public ResponseEntity<?> exportDynamicTemplate(@RequestBody String resquest, HttpServletResponse response) throws IOException {
+	public ResponseData<?> exportDynamicTemplate(@RequestBody String resquest, HttpServletResponse response) throws IOException {
 		reportService.exportDynamicTemplate(resquest, response);
-		return ResponseEntity.ok("Report Success");
+		return new ResponseData<>().success("Report success!");
 	}
 
 	@SuppressWarnings("deprecation")

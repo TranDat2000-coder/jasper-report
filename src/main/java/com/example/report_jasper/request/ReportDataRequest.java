@@ -6,5 +6,6 @@ import lombok.Data;
 public class ReportDataRequest<T> {
 
 	private String type;
+
 	private T reportData;
 }
